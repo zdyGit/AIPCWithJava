@@ -14,14 +14,6 @@ public class Product extends AbstractProduct{
         return 0;
     }
 
-    public double getLastPrice() {
-        return 0;
-    }
-
-    public String getLastTradeDate() {
-        return "20100101";
-    }
-
     @Override
     public double getLatestTradeAmount(){
         return this.getTradeStrategy().getTradeAmount();
