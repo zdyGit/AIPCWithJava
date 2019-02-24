@@ -47,9 +47,9 @@ public class TradeInfoResp {
             return;
         }
         try {
-            TradeInfo tInfo = null;
             JSONArray jprodList = jData.getJSONArray("prods");
             JSONObject jprod = new JSONObject();
+            TradeInfo tInfo = null;
             for (Object jd : jprodList) {
                 jprod = (JSONObject) jd;
                 tInfo = new TradeInfo(jprod.getString("prodCode").trim().toLowerCase());

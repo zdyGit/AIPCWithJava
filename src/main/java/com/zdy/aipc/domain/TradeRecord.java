@@ -5,10 +5,6 @@ public class TradeRecord {
     private String lastTradeDate;
     private double lastTradeAmount;
 
-    public TradeRecord(){
-
-    }
-
     public double getLastTradePrice() {
         return lastTradePrice;
     }

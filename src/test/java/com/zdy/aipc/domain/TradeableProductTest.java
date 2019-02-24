@@ -1,14 +1,15 @@
 package com.zdy.aipc.domain;
 
+import com.zdy.aipc.domain.Product.TradeableProduct;
 import com.zdy.aipc.domain.productmarket.CYBProductMarket;
 import com.zdy.aipc.domain.tradestragegy.DefaultTradeStrategy;
 import org.junit.Test;
 
-public class ProductTest {
+public class TradeableProductTest {
 
     @Test
     public void prodInfoTest() throws Exception{
-        Product p = new Product("a1");
+        TradeableProduct p = new TradeableProduct("a1");
         p.setProductMarket(new CYBProductMarket(p.getProdCode()));
         try {
 

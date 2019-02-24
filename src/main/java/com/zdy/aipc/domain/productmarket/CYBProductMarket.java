@@ -7,7 +7,6 @@ import com.zdy.aipc.utils.HttpUtils;
 import java.util.HashMap;
 
 public class CYBProductMarket extends ProductMarket {
-
     private String prodCode;
 
     public CYBProductMarket(String prodCode){

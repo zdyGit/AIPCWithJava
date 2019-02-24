@@ -1,28 +1,40 @@
-package com.zdy.aipc.domain;
+package com.zdy.aipc.domain.Product;
 
+import com.zdy.aipc.domain.TradeInfo;
+import com.zdy.aipc.domain.TradeInfoResp;
+import com.zdy.aipc.domain.TradeRecord;
 import com.zdy.aipc.domain.productmarket.ProductMarket;
 import com.zdy.aipc.domain.tradestragegy.*;
+import com.zdy.aipc.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Product extends AbstractProduct{
+public class TradeableProduct extends AbstractProduct{
     private ITradeStrategy tradeStrategy;
     private ProductMarket productMarket;
     private TradeInfo tradeInfo;
 
-    public Product(String code) throws Exception{
+    public TradeableProduct(String code) throws Exception{
         this.setProdCode(code);
     }
 
-    @Override
     public TradeInfo getTradeInfo() {
         TradeInfo tInfo = TradeInfoResp.getTradeInfo(this.getProdCode());
         this.tradeInfo = tInfo;
         return tInfo;
     }
     public void setTradeInfo() throws Exception{
+        SimpleDateFormat dfTime = new SimpleDateFormat("HHmmss");
+        String curTime = dfTime.format(new Date());
+        if (curTime.compareTo("153000")<0){
+            throw  new Exception("after 15：30 can do");
+        }
+
+        if(this.tradeInfo ==null){
+            getTradeInfo();
+        }
         TradeInfo tInfo = this.tradeInfo;
         if(tInfo == null){
             throw  new Exception("历史交易记录为空");
@@ -30,10 +42,9 @@ public class Product extends AbstractProduct{
 
         TradeRecord tradeRecord = new TradeRecord();
         tradeRecord.setLastTradeAmount(this.getLatestTradeAmount());
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd HHmmss");
-        String curDateTime =  df.format(new Date());
-        String curDate = curDateTime.split(" ")[0];
-        tradeRecord.setLastTradeDate(curDate);
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        String now =  df.format(new Date());
+        tradeRecord.setLastTradeDate(now);
         tradeRecord.setLastTradePrice(this.getLatestPrice());
 
         tInfo.setTradeRecord(tradeRecord);
@@ -54,26 +65,24 @@ public class Product extends AbstractProduct{
         HashMap<String,Object>  tradeData= productMarket.getLatestTradeInfo();
         return (double)tradeData.getOrDefault("latestPrice",0);
     }
-    @Override
+
     public double getLatestTradeAmount() throws Exception{
         if(this.tradeStrategy == null){
             throw new Exception("tradeStrategy not set");
         }
         return this.tradeStrategy.getTradeAmount();
     }
-    @Override
+
     public double getLatestChangeRate() throws Exception{
-        if(this.tradeStrategy == null){
-            throw new Exception("tradeStrategy not set");
-        }
-        return this.tradeStrategy.getChangeRate();
+        double latestPrice = getLatestPrice();
+        double lastTradePrice = this.getTradeInfo().getTradeRecord().getLastTradePrice();
+        return (double) Math.round((latestPrice-lastTradePrice)/lastTradePrice*1000)/1000;
     }
 
-    @Override
     public int getLatestDaysDiff() throws  Exception{
-        if(this.tradeStrategy == null){
-            throw new Exception("tradeStrategy not set");
-        }
-        return this.tradeStrategy.getDaysDiff();
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        String now = df.format(new Date());
+        String lastTradeDate = this.getTradeInfo().getTradeRecord().getLastTradeDate();
+        return DateUtils.getDaysDiff(lastTradeDate,now);
     }
 }

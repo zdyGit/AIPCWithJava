@@ -1,16 +1,11 @@
-package com.zdy.aipc.domain;
+package com.zdy.aipc.domain.Product;
+
+import com.zdy.aipc.domain.TradeInfo;
 
 public class AbstractProduct {
     private String productName;
     private String prodCode;
-    private TradeInfo tradeInfo;
 
-    public TradeInfo getTradeInfo() {
-        return tradeInfo;
-    }
-    public void setTradeInfo(TradeInfo tradeInfo) {
-        this.tradeInfo = tradeInfo;
-    }
     public String getProductName() {
         return productName;
     }
@@ -35,11 +30,5 @@ public class AbstractProduct {
     public double getLatestPrice() throws  Exception{
         return 0.00;
     }
-    public double getLatestTradeAmount() throws Exception{ return 0.00; };
-    public double getLatestChangeRate() throws Exception{
-        return 0;
-    }
-    public int getLatestDaysDiff() throws Exception{
-        return 0;
-    }
+
 }
