@@ -1,0 +1,20 @@
+{
+  "prods":[
+    {
+      "prodCode":"a1",
+      "prodName":"创业板",
+      "infoUrl":"http://hq.sinajs.cn/list=sz399006",
+      "tradeParameter":{
+        "baseTradeAmount":100,
+        "maxChangeRate":0.095,
+        "maxPeriodDays":7
+      },
+      "tradeRecord":{
+        "lastTradePrice":1.20352,
+        "lastTradeDate":"20190222",
+        "lastTradeAmount":230
+      }
+    }
+
+  ]
+}

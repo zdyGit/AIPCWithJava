@@ -1,27 +1,30 @@
 package com.zdy.aipc.domain;
 
-import com.zdy.aipc.utils.ConfigReader;
-import com.alibaba.fastjson.*;
-
 public class TradeRecord {
-    private String prodCode;
+    private double lastTradePrice;
+    private String lastTradeDate;
+    private double lastTradeAmount;
 
-    public double lastTradeDate;
-    public double lastTradePrice;
-
-    public TradeRecord(String prodCode){
-        this.prodCode = prodCode;
-    }
-
-    private void loadTradeVaue(){
-        JSONObject jData ;
-
-        try {
-            jData = ConfigReader.configReaderToJson("");
-        }catch (Exception ex){
-            
-        }
+    public TradeRecord(){
 
     }
 
+    public double getLastTradePrice() {
+        return lastTradePrice;
+    }
+    public void setLastTradePrice(double lastTradePrice) {
+        this.lastTradePrice = lastTradePrice;
+    }
+    public String getLastTradeDate() {
+        return lastTradeDate;
+    }
+    public void setLastTradeDate(String lastTradeDate) {
+        this.lastTradeDate = lastTradeDate;
+    }
+    public double getLastTradeAmount() {
+        return lastTradeAmount;
+    }
+    public void setLastTradeAmount(double lastTradeAmount) {
+        this.lastTradeAmount = lastTradeAmount;
+    }
 }

@@ -1,18 +1,16 @@
-package com.zdy.aipc.utils;
+package com.zdy.aipc.utils.jsonutils;
 
 import com.alibaba.fastjson.*;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.File;
 
-public class ConfigReader  {
+public class JsonConfigReader {
 
-    public static JSONObject configReaderToJson(String filePath) throws IOException{
+    public static JSONObject getJsonObject(String filePath) throws IOException{
         try {
-            String fileFullPath = ConfigReader.class.getClassLoader().getResource(filePath).getPath();
-            File file = new File(fileFullPath);
-            String jsonData = jsonRead(file);
-            JSONObject jsonObject = JSON.parseObject(jsonData);
+            String jsonDataStr = jsonRead(filePath);
+            JSONObject jsonObject = JSON.parseObject(jsonDataStr);
             return jsonObject;
         } catch (Exception e) {
             e.printStackTrace();
@@ -20,17 +18,21 @@ public class ConfigReader  {
         }
     }
 
-    public static JSONArray configReaderToJsonArry(String filePath) throws IOException{
+    public static JSONArray getJsonArray(String filePath) throws IOException{
         try {
-            String fileFullPath = ConfigReader.class.getClassLoader().getResource(filePath).getPath();
-            File file = new File(fileFullPath);
-            String jsonData = jsonRead(file);
-            JSONArray jsonObject = JSONArray.parseArray(jsonData);
-            return jsonObject;
+            String jsonDataStr = jsonRead(filePath);
+            JSONArray jsonArray = JSONArray.parseArray(jsonDataStr);
+            return jsonArray;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private static String jsonRead(String filePath){
+        String fileFullPath = JsonConfigReader.class.getClassLoader().getResource(filePath).getPath();
+        File file = new File(fileFullPath);
+        return jsonRead(file);
     }
 
     private static String jsonRead(File file){
@@ -42,7 +44,6 @@ public class ConfigReader  {
                 buffer.append(scanner.nextLine());
             }
         } catch (Exception e) {
-
         } finally {
             if (scanner != null) {
                 scanner.close();
