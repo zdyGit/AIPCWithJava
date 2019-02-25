@@ -12,7 +12,8 @@ public class JsonConfigWriter {
         }
         text = JsonStrFormat.format(text);
         try {
-            String fileFullPath = JsonConfigReader.class.getClassLoader().getResource(filePath).getPath();
+            String fileFullPath = JsonConfigWriter.class.getClassLoader().getResource(filePath).getPath();
+            System.out.println("writeFilePath:"+fileFullPath);
             try {
                 fw = new FileWriter(fileFullPath,false);
             }

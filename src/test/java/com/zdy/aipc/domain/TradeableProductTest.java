@@ -21,6 +21,6 @@ public class TradeableProductTest {
         }
 
         System.out.println(p.getLatestPrice());
-        p.setTradeInfo();
+        //p.setTradeInfo();
     }
 }
