@@ -3,6 +3,7 @@ package com.zdy.aipc.utils.jsonutils;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 
 public class JsonConfigWriter {
     public static void writeFile(String filePath,String text){
@@ -12,10 +13,12 @@ public class JsonConfigWriter {
         }
         text = JsonStrFormat.format(text);
         try {
-            String fileFullPath = JsonConfigWriter.class.getClassLoader().getResource(filePath).getPath();
-            System.out.println("writeFilePath:"+fileFullPath);
+            String rootPath = JsonConfigWriter.class.getResource("/").getFile().toString();
+            System.out.println("rootPath:"+rootPath);
+            String fullFilePath = rootPath+"/"+filePath;
+            System.out.println("fullFilePath:"+fullFilePath);
             try {
-                fw = new FileWriter(fileFullPath,false);
+                fw = new FileWriter(fullFilePath,false);
             }
             catch (IOException ex){
                 ex.printStackTrace();

@@ -7,17 +7,12 @@ import com.zdy.aipc.utils.HttpUtils;
 import java.util.HashMap;
 
 public class CYBProductMarket extends ProductMarket {
-    private String prodCode;
-
-    public CYBProductMarket(String prodCode){
-        this.prodCode = prodCode;
-    }
 
     @Override
-    public HashMap<String,Object> getLatestTradeInfo() {
+    public HashMap<String,Object> getLatestTradeInfo(String prodCode) {
 
         HashMap<String,Object> tradeData = new HashMap<String,Object>();
-        TradeInfo tInfo = TradeInfoResp.getTradeInfo(this.prodCode);
+        TradeInfo tInfo = TradeInfoResp.getTradeInfo(prodCode);
         String response = HttpUtils.sendPost(tInfo.getInfoUrl(),"");
         try{
             String[] arr1 =response.split("=");

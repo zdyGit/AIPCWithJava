@@ -4,6 +4,6 @@ import java.util.HashMap;
 
 public abstract class ProductMarket {
 
-    public abstract HashMap<String,Object> getLatestTradeInfo();
+    public abstract HashMap<String,Object> getLatestTradeInfo(String prodCode);
 
 }

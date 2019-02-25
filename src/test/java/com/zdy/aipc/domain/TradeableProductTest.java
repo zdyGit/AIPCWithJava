@@ -10,7 +10,7 @@ public class TradeableProductTest {
     @Test
     public void prodInfoTest() throws Exception{
         TradeableProduct p = new TradeableProduct("a1");
-        p.setProductMarket(new CYBProductMarket(p.getProdCode()));
+        p.setProductMarket(new CYBProductMarket());
         try {
 
             p.setTradeStrategy(new DefaultTradeStrategy(p));

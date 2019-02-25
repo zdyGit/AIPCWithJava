@@ -3,6 +3,7 @@ package com.zdy.aipc.domain.Product;
 import com.zdy.aipc.domain.TradeInfo;
 import com.zdy.aipc.domain.TradeInfoResp;
 import com.zdy.aipc.domain.TradeRecord;
+import com.zdy.aipc.domain.productconfig.IProductConfig;
 import com.zdy.aipc.domain.productmarket.ProductMarket;
 import com.zdy.aipc.domain.tradestragegy.*;
 import com.zdy.aipc.utils.DateUtils;
@@ -15,11 +16,16 @@ public class TradeableProduct extends AbstractProduct{
     private ITradeStrategy tradeStrategy;
     private ProductMarket productMarket;
     private TradeInfo tradeInfo;
+    private IProductConfig productConfig;
 
     public TradeableProduct(String code) throws Exception{
         this.setProdCode(code);
     }
 
+    public void setProductConfig(IProductConfig pConfig){
+        pConfig.setProductMarkey(this);
+        pConfig.setTradeStragegy(this);
+    }
     public TradeInfo getTradeInfo() {
         TradeInfo tInfo = TradeInfoResp.getTradeInfo(this.getProdCode());
         this.tradeInfo = tInfo;
@@ -62,7 +68,7 @@ public class TradeableProduct extends AbstractProduct{
         if(productMarket == null){
             throw new Exception("productMarket not set") ;
         }
-        HashMap<String,Object>  tradeData= productMarket.getLatestTradeInfo();
+        HashMap<String,Object>  tradeData= productMarket.getLatestTradeInfo(this.getProdCode());
         return (double)tradeData.getOrDefault("latestPrice",0);
     }
 
