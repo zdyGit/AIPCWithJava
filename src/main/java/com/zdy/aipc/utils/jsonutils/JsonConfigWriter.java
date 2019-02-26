@@ -2,13 +2,11 @@ package com.zdy.aipc.utils.jsonutils;
 
 import com.zdy.aipc.utils.SysUtils;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 public class JsonConfigWriter {
     public static void writeFile(String filePath,String text){
-        FileWriter fw;
+        BufferedWriter fw;
         if(text.trim().isEmpty()){
             return ;
         }
@@ -18,7 +16,8 @@ public class JsonConfigWriter {
             String fullFilePath = rootPath+filePath;
             System.out.println("JsonConfigWriter.writeFile.jsonfilepath:"+fullFilePath);
             try {
-                fw = new FileWriter(fullFilePath,false);
+                //fw = new FileWriter(fullFilePath,false);
+                fw = new BufferedWriter (new OutputStreamWriter (new FileOutputStream(fullFilePath,false),"UTF-8"));
             }
             catch (IOException ex){
                 ex.printStackTrace();
