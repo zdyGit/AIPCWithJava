@@ -1,6 +1,7 @@
 package com.zdy.aipc.utils.jsonutils;
 
 import com.alibaba.fastjson.*;
+import com.zdy.aipc.utils.SysUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -12,7 +13,7 @@ public class JsonConfigReader {
 
     public static JSONObject getJsonObject(String filePath) throws IOException{
         try {
-            String jsonDataStr = jsonReadByStream(filePath);
+            String jsonDataStr = jsonRead(filePath);
             System.out.println(jsonDataStr);
             JSONObject jsonObject = JSON.parseObject(jsonDataStr);
             return jsonObject;
@@ -24,7 +25,7 @@ public class JsonConfigReader {
 
     public static JSONArray getJsonArray(String filePath) throws IOException{
         try {
-            String jsonDataStr = jsonReadByStream(filePath);
+            String jsonDataStr = jsonRead(filePath);
             JSONArray jsonArray = JSONArray.parseArray(jsonDataStr);
             return jsonArray;
         } catch (Exception e) {
@@ -33,8 +34,12 @@ public class JsonConfigReader {
         }
     }
 
+    //读取Jar包内配置文件
     private static String jsonReadByStream(String filePath) throws Exception{
-        InputStream inputStream = JsonConfigReader.class.getClassLoader().getResourceAsStream(filePath);
+        String rootPath = SysUtils.getSysRootPath();
+        String fullFilePath = rootPath+filePath;
+        System.out.println("JsonConfigReader.jsonReadByStream.jsonfilepath:"+fullFilePath);
+        InputStream inputStream = JsonConfigReader.class.getResourceAsStream(fullFilePath);
         ByteArrayOutputStream result = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int length;
@@ -45,10 +50,12 @@ public class JsonConfigReader {
         return result.toString("UTF-8");
     }
 
+    //读取jar包外配置文件
     private static String jsonRead(String filePath){
-        String fileFullPath = JsonConfigReader.class.getClassLoader().getResource(filePath).getPath();
-        System.out.println("load file:"+fileFullPath);
-        File file = new File(fileFullPath);
+        String rootPath = SysUtils.getSysRootPath();
+        String fullFilePath = rootPath+filePath;
+        System.out.println("JsonConfigReader.jsonRead.jsonfilepath:"+fullFilePath);
+        File file = new File(fullFilePath);
         return jsonRead(file);
     }
 
