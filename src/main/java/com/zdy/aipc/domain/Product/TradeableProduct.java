@@ -79,10 +79,19 @@ public class TradeableProduct extends AbstractProduct{
         return this.tradeStrategy.getTradeAmount();
     }
 
+    @Override
+    public double getLatestDropRate() throws  Exception{
+        if(productMarket == null){
+            throw new Exception("productMarket not set") ;
+        }
+        HashMap<String,Object>  tradeData= productMarket.getLatestTradeInfo(this.getProdCode());
+        return (double)tradeData.getOrDefault("latestDropRate",0);
+    }
+
     public double getLatestChangeRate() throws Exception{
         double latestPrice = getLatestPrice();
         double lastTradePrice = this.getTradeInfo().getTradeRecord().getLastTradePrice();
-        return (double) Math.round((latestPrice-lastTradePrice)/lastTradePrice*1000)/1000;
+        return (latestPrice-lastTradePrice)/lastTradePrice;
     }
 
     public int getLatestDaysDiff() throws  Exception{

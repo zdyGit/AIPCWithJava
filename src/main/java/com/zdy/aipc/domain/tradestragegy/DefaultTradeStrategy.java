@@ -36,13 +36,19 @@ public class DefaultTradeStrategy implements ITradeStrategy {
         double maxChangeRate = tradeInfo.getTradeParameter().getMaxChangeRate();
         double maxPeriodDays = tradeInfo.getTradeParameter().getMaxPeriodDays();
 
-        double priceChangeRate = (lastPrice - latestPrice)/lastPrice;
+        double priceChangeRate = (latestPrice - lastPrice)/lastPrice;
+        double getLatestDropRate = product.getLatestDropRate();
+
+        if(priceChangeRate >=0) priceChangeRate=0;
+        if(getLatestDropRate >=0) getLatestDropRate=0;
 
 
         double daysDiff = 0;
         daysDiff = DateUtils.getDaysDiff(lastTradeDate,now);
 
         double tradeAmount = 0 ;
+
+        priceChangeRate = 0-Math.min(priceChangeRate,getLatestDropRate);
         if(priceChangeRate >= maxChangeRate){
             tradeAmount = baseTradeAmount*100*priceChangeRate;
         }
@@ -54,7 +60,7 @@ public class DefaultTradeStrategy implements ITradeStrategy {
                 tradeAmount = 0;
             }
         }
-        return (double) Math.round(tradeAmount * 100) / 100;
+        return tradeAmount ;
     }
 
 }

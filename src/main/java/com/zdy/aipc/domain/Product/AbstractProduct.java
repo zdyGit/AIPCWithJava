@@ -31,4 +31,8 @@ public class AbstractProduct {
         return 0.00;
     }
 
+    public double getLatestDropRate() throws Exception{
+        return 0.00;
+    }
+
 }

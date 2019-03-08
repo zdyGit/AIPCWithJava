@@ -20,7 +20,10 @@ public class CYBProductMarket extends ProductMarket {
             String[] dataList = dataContent.split(",");
 
             double latestPrice = Double.parseDouble(dataList[3]);
+            double yestPrice = Double.parseDouble(dataList[2]);
             tradeData.put("latestPrice",latestPrice);
+            tradeData.put("yestPrice",yestPrice);
+            tradeData.put("latestDropRate",(latestPrice-yestPrice)/yestPrice);
         }
         catch (Exception ex){
 

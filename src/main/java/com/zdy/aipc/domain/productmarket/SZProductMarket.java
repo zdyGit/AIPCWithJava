@@ -21,7 +21,9 @@ public class SZProductMarket extends ProductMarket{
             String[] dataList = dataContent.split(",");
 
             double latestPrice = Double.parseDouble(dataList[1]);
+            double curDropRate = Double.parseDouble(dataList[3])*1.0/100;
             tradeData.put("latestPrice",latestPrice);
+            tradeData.put("latestDropRate",curDropRate);
         }
         catch (Exception ex){
 

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.zdy.aipc.Service.ProductService;
 import com.zdy.aipc.domain.TradeRecord;
+import com.zdy.aipc.utils.MathUtils;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,7 @@ public class ProductController {
         actionMenu.put("actionMode1.2","getLatestDaysDiff");
         actionMenu.put("actionMode2","getLastTradeRecord");
         actionMenu.put("actionMode3","saveTradeRecord");
+        actionMenu.put("actionMode0","getProdInfo");
     }
 
     @RequestMapping("/v1/product")
@@ -65,6 +67,16 @@ public class ProductController {
             case "actionmode3":
                 ProductService.saveTradeRecord(prodCode);
                 jres.put("result","success");
+                jres.put("action tips",actionMenu);
+                break;
+            case "actionmode0":
+                jres.put("prodCode",prodCode);
+                jres.put("latestPrice",ProductService.getLatestPrice(prodCode));
+                jres.put("latestDropRate", MathUtils.LimitPoint(ProductService.getLatestDropRate(prodCode)*100,2));
+                jres.put("maxDropRate",MathUtils.LimitPoint(ProductService.getLatestChangeRate(prodCode)*100,2));
+                jres.put("maxDaysDiff",ProductService.getLatestDaysDiff(prodCode));
+                jres.put("tradeAmount",ProductService.getLatestTradeAmount(prodCode));
+                jres.put("lastTradeRecord",JSONObject.toJSONString(ProductService.getLastTradeRecord(prodCode), SerializerFeature.WriteNullStringAsEmpty));
                 jres.put("action tips",actionMenu);
                 break;
             default:

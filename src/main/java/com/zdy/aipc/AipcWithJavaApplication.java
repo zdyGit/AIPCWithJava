@@ -17,10 +17,11 @@ public class AipcWithJavaApplication {
 		String confPath = context.getEnvironment().getProperty("cpath");
 
 		if(confPath == null ||confPath.isEmpty()){
+			System.out.println("command:--cpath to set config rootpath");
 			return ;
 		}
 		else{
-			System.out.println("set config rootpath(command:--cpath):"+confPath);
+			System.out.println("set config rootpath success:"+confPath);
 			SysUtils.setSysRootPath(confPath);
 		}
 	}

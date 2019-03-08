@@ -37,4 +37,16 @@ public class ProductService {
         tradeableProduct.setProductConfig(ProductConfigFactory.getProductConfig(prodCode));
         tradeableProduct.setTradeInfo();
     }
+
+    public static double getLatestDropRate(String prodCode) throws Exception{
+        TradeableProduct tradeableProduct = new TradeableProduct(prodCode);
+        tradeableProduct.setProductConfig(ProductConfigFactory.getProductConfig(prodCode));
+        return tradeableProduct.getLatestDropRate();
+    }
+
+    public static double getLatestPrice(String prodCode) throws Exception{
+        TradeableProduct tradeableProduct = new TradeableProduct(prodCode);
+        tradeableProduct.setProductConfig(ProductConfigFactory.getProductConfig(prodCode));
+        return tradeableProduct.getLatestPrice();
+    }
 }
