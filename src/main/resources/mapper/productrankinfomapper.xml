@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdy.aipc.mapper.IProductRankInfoMapper">
+
+    <select id="getProductRankInfoByProdCode" resultType="com.zdy.aipc.domain.ProductRankInfo">
+        select * from ProductRankInfo t where t.prodCode = #{prodCode} order by t.sysdt desc,t.ranktype asc,t.rn asc
+    </select>
+
+    <select id="getProductRankInfoBySysdt" resultType="com.zdy.aipc.domain.ProductRankInfo">
+        select * from ProductRankInfo t where t.sysdt = #{sysdt}  order by t.ranktype asc,t.rn asc,t.prodCode asc;
+    </select>
+
+    <select id="getProductRankInfoByRankType" resultType="com.zdy.aipc.domain.ProductRankInfo">
+        select * from ProductRankInfo t where t.rankType = #{rankType}  order by t.sysdt desc,t.rn asc,t.prodCode asc;
+    </select>
+
+    <select id="getProductRankInfoBySysdtAndRankType" resultType="com.zdy.aipc.domain.ProductRankInfo">
+        select * from ProductRankInfo t where t.sysdt = #{sysdt} and t.rankType = #{rankType} order by t.rn asc,t.prodCode asc
+    </select>
+
+    <select id="getProductRankInfoByProdCodeAndSysdt" resultType="com.zdy.aipc.domain.ProductRankInfo">
+        select * from ProductRankInfo t where t.prodCode = #{prodCode}  and t.sysdt = #{sysdt} order by t.ranktype asc,t.rn asc
+    </select>
+
+    <insert id="addProductRankInfo" parameterType="com.zdy.aipc.domain.ProductRankInfo">
+        insert into ProductRankInfo(rn,prodName,prodCode,sysdt,rate,nav,rankType,createdate)
+        values
+        (#{rn},#{prodName},#{prodCode},#{sysdt},#{rate},#{nav},#{rankType},#{createdate})
+    </insert>
+
+    <insert id="addBatchProductRankInfo" parameterType="List">
+        insert into ProductRankInfo(rn,prodName,prodCode,sysdt,rate,nav,rankType,createdate)
+        values
+        <foreach collection="list" item="productRankInfo" separator=",">
+        (#{productRankInfo.rn},#{productRankInfo.prodName},#{productRankInfo.prodCode},#{productRankInfo.sysdt},#{productRankInfo.rate},#{productRankInfo.nav},#{productRankInfo.rankType},#{productRankInfo.createdate})
+        </foreach>
+    </insert>
+
+    <delete id="delProductRankInfoBySysdtAndRankType" >
+        delete from ProductRankInfo where sysdt = #{sysdt} and rankType = #{rankType}
+    </delete>
+
+    <delete id="delProductRankInfoBySysdt" >
+        delete from ProductRankInfo where createdate >= CONCAT(#{sysdt},'000000') and rankType = #{rankType}
+    </delete>
+
+
+
+
+</mapper>

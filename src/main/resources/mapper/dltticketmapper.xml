@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdy.aipc.mapper.IDLTTicketMapper">
+
+    <insert id="addTicket" parameterType="com.zdy.aipc.domain.DLTTicket">
+        insert  DLTTicket (ticketno,term,timer,ticketCode,createdate,isvalid)
+        values
+        (#{ticketno},#{term},#{timer},#{ticketCode},#{createDate},#{isvalid})
+    </insert>
+
+    <select id="queryValidTicket" resultType="com.zdy.aipc.domain.DLTTicket">
+        select * from DLTTicket t where t.isvalid = 1 order by term asc
+    </select>
+
+    <select id="querySingleTicket" resultType="com.zdy.aipc.domain.DLTTicket">
+        select * from DLTTicket t where  t.ticketno = #{ticketno} order by term asc
+    </select>
+
+    <update id="updateTicketValid" parameterType="string">
+        update DLTTicket t set t.isvalid = 0 where t.ticketno = #{ticketno}
+    </update>
+
+</mapper>

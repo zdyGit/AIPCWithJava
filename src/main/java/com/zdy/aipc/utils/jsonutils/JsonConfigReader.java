@@ -1,6 +1,7 @@
 package com.zdy.aipc.utils.jsonutils;
 
 import com.alibaba.fastjson.*;
+import com.zdy.aipc.utils.LogbackUtils;
 import com.zdy.aipc.utils.SysUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -54,6 +55,7 @@ public class JsonConfigReader {
     private static String jsonRead(String filePath){
         String rootPath = SysUtils.getSysRootPath();
         String fullFilePath = rootPath+filePath;
+        LogbackUtils.info(String.format("加载配置文件 %s",fullFilePath));
         System.out.println("JsonConfigReader.jsonRead.jsonfilepath:"+fullFilePath);
         File file = new File(fullFilePath);
         return jsonRead(file);

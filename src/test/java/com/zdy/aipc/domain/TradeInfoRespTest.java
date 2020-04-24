@@ -6,6 +6,6 @@ public class TradeInfoRespTest {
 
     @Test
     public void loadTradeInfoTest(){
-        TradeInfoResp.loadTradeData();
+        //TradeInfoResp.loadTradeData();
     }
 }

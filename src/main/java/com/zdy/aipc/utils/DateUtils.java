@@ -9,6 +9,8 @@ import java.util.GregorianCalendar;
 public class DateUtils {
     private  static SimpleDateFormat strandDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private  static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+    private  static SimpleDateFormat strandDateFullFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+
 
     public static int getWorkDaysDiff(String dayStr1,String dayStr2) throws ParseException {
         Date day1;
@@ -81,5 +83,18 @@ public class DateUtils {
         }
         return count;
 
+    }
+
+    public static String getDate(){
+        return dateFormat.format(new Date());
+    }
+
+    public static String getFullDate(){
+        return strandDateFullFormat.format(new Date());
+    }
+
+    public static String getDate(String dataFormat) throws Exception{
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dataFormat);
+        return simpleDateFormat.format(new Date());
     }
 }

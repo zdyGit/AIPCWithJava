@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdy.aipc.mapper.IDLTTermDetailMapper">
+
+    <insert id="addTermDetail" parameterType="com.zdy.aipc.domain.DLTTermDetail">
+        insert  DLTTermDetail (term,num,jlevel,piece,money)
+        values
+        (#{term},#{num},#{jlevel},#{piece},#{money})
+    </insert>
+
+    <select id="queryTermDetail" parameterType="string" resultType="com.zdy.aipc.domain.DLTTermDetail">
+        select * from DLTTermDetail t where t.term = #{termCode} order by num asc
+    </select>
+</mapper>

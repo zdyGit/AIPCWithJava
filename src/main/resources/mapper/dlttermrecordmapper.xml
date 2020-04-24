@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdy.aipc.mapper.IDLTTermRecordMapper">
+
+    <insert id="addTermRecord" parameterType="com.zdy.aipc.domain.DLTTermRecord">
+        insert  DLTTermRecord (term,codeNumber5,codeNumber2,sTime,updateTime)
+        values
+        (#{term},#{codeNumber5},#{codeNumber2},#{sTime},#{updateTime})
+    </insert>
+
+    <select id="queryTermRecord" parameterType="string" resultType="com.zdy.aipc.domain.DLTTermRecord">
+        select * from DLTTermRecord t where t.term = #{termCode}
+    </select>
+
+    <select id="queryLatestTermRecord" resultType="com.zdy.aipc.domain.DLTTermRecord">
+        select * from DLTTermRecord order by term desc limit 1
+    </select>
+
+    <select id="queryLimitTermRecord"  resultType="com.zdy.aipc.domain.DLTTermRecord">
+        select * from DLTTermRecord t where  t.term >= #{termCode} order by term asc limit #{limitNum}
+    </select>
+
+</mapper>

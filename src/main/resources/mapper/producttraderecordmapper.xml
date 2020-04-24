@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdy.aipc.mapper.IProductTradeRecordMapper">
+
+
+    <select id="getProductTradeRecordByProdCode" resultType="com.zdy.aipc.domain.ProductTradeRecord">
+        select * from ProductTradeRecord t where t.prodCode = #{prodCode} order by t.tradeDate desc;
+    </select>
+
+    <insert id="insertProductTradeRecord" parameterType="com.zdy.aipc.domain.ProductTradeRecord">
+        insert into ProductTradeRecord (prodCode,tradeAmount,tradeDate,tradeIndex,tradeType) values (#{prodCode},#{tradeAmount},#{tradeDate},#{tradeIndex},#{tradeType});
+    </insert>
+
+</mapper>

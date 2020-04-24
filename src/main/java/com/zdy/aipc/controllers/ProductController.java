@@ -3,87 +3,74 @@ package com.zdy.aipc.controllers;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.zdy.aipc.Service.ProductService;
-import com.zdy.aipc.domain.TradeRecord;
-import com.zdy.aipc.utils.MathUtils;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.zdy.aipc.domain.ProductInfo;
+import com.zdy.aipc.domain.ProductTradeParam;
+import com.zdy.aipc.domain.ProductTradeRecord;
+import com.zdy.aipc.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@EnableAutoConfiguration
+@RestController
+@RequestMapping("/v1/product")
 public class ProductController {
 
-    private static HashMap<String,String> actionMenu = new HashMap<String,String>();
+    @Autowired
+    ProductService productService;
 
-    static {
-        actionMenu.put("actionMode1","getLatestTradeAmount");
-        actionMenu.put("actionMode1.1","getLatestChangeRate");
-        actionMenu.put("actionMode1.2","getLatestDaysDiff");
-        actionMenu.put("actionMode2","getLastTradeRecord");
-        actionMenu.put("actionMode3","saveTradeRecord");
-        actionMenu.put("actionMode0","getProdInfo");
+    @RequestMapping(value = "/getProductInfo/{prodCode}",method= RequestMethod.GET)
+    public String getProductInfo(@PathVariable(name = "prodCode") String prodCode) throws Exception{
+        return productService.getLatestProductInfo(prodCode).toJSONString();
     }
 
-    @RequestMapping("/v1/product")
-    @ResponseBody
-    public String productMain(@RequestBody JSONObject jParam) throws Exception {
+    @RequestMapping(value = "/getProductInfo/all",method= RequestMethod.GET)
+    public String getAllProductInfo() throws Exception{
+        return productService.getLatestAllProductInfo().toJSONString();
+    }
 
-        String prodCode = jParam.getString("prodCode");
-        if(prodCode == null){
-            prodCode = "";
+    @RequestMapping(value = "/getLatestTradeAmount/{prodCode}",method= RequestMethod.GET)
+    public String getLatestTradeAmount(@PathVariable(name = "prodCode") String prodCode) throws Exception{
+        return productService.getLatestTradeAmount(prodCode).toJSONString();
+    }
+
+    @RequestMapping(value = "/getLatestTradeAmount/all",method= RequestMethod.GET)
+    public String getLatestTradeAmount() throws Exception{
+        return productService.getLatestAllTradeAmount().toJSONString();
+    }
+
+    @RequestMapping(value = "/getProductTradeParam/{prodCode}",method= RequestMethod.GET)
+    public String getProductTradeParam(@PathVariable(name = "prodCode") String prodCode) throws Exception{
+
+        ProductTradeParam productTradeParam = productService.getProductTradeParam(prodCode);
+        return JSON.toJSONString(productTradeParam);
+    }
+
+    @RequestMapping(value = "/getLatestTradeRecord/{prodCode}",method= RequestMethod.GET)
+    public String getLatestTradeRecord(@PathVariable(name = "prodCode") String prodCode) throws Exception{
+        ProductTradeRecord productTradeRecord = productService.getLastTradeRecord(prodCode);
+        return JSON.toJSONString(productTradeRecord);
+    }
+
+    @RequestMapping(value = "/saveTradeInfo/{prodCode}",method= RequestMethod.GET)
+    public String saveTradeInfo(@PathVariable(name = "prodCode") String prodCode) throws Exception{
+        try{
+            productService.addTradeRecord(prodCode);
         }
-        prodCode = prodCode.trim().toLowerCase();
-
-        String action = jParam.getString("action");
-        if(action == null){
-            action = "";
+        catch (Exception ex){
+            return String.format("%s,%s","ERROR",ex.getMessage());
         }
-        action = action.trim().toLowerCase();
+        return "SUCCESSFULLY";
+    }
 
-        JSONObject jres = new JSONObject();
-        switch (action){
-            case "actionmode1":
-                jres.put("tradeAmount",ProductService.getLatestTradeAmount(prodCode)+"");
-                jres.put("action tips",actionMenu);
-                break;
-            case "actionmode1.1":
-                jres.put("changeRate",ProductService.getLatestChangeRate(prodCode)+"");
-                jres.put("action tips",actionMenu);
-                break;
-            case "actionmode1.2":
-                jres.put("daysDiff",ProductService.getLatestDaysDiff(prodCode)+"");
-                jres.put("action tips",actionMenu);
-                break;
-            case "actionmode2":
-                TradeRecord  tradeRecord =ProductService.getLastTradeRecord(prodCode);
-                jres.put("tradeRecord",JSONObject.toJSONString(tradeRecord, SerializerFeature.WriteNullStringAsEmpty));
-                jres.put("action tips",actionMenu);
-                break;
-            case "actionmode3":
-                ProductService.saveTradeRecord(prodCode);
-                jres.put("result","success");
-                jres.put("action tips",actionMenu);
-                break;
-            case "actionmode0":
-                jres.put("prodCode",prodCode);
-                jres.put("latestPrice",ProductService.getLatestPrice(prodCode));
-                jres.put("latestDropRate", MathUtils.LimitPoint(ProductService.getLatestDropRate(prodCode)*100,2));
-                jres.put("maxDropRate",MathUtils.LimitPoint(ProductService.getLatestChangeRate(prodCode)*100,2));
-                jres.put("maxDaysDiff",ProductService.getLatestDaysDiff(prodCode));
-                jres.put("tradeAmount",ProductService.getLatestTradeAmount(prodCode));
-                jres.put("lastTradeRecord",JSONObject.toJSONString(ProductService.getLastTradeRecord(prodCode), SerializerFeature.WriteNullStringAsEmpty));
-                jres.put("action tips",actionMenu);
-                break;
-            default:
-                jres.put("action tips",actionMenu);
-                break;
-
+    @RequestMapping(value = "/autoUpdateBaseindex/{prodCode}",method = RequestMethod.GET)
+    public String autoUpdateBaseindex(@PathVariable(value = "prodCode") String prodCode){
+        try
+        {
+            productService.autoUpdateBaseindex(prodCode);
+            return "SUCCESSFULLY";
         }
-        return jres.toJSONString();
+        catch (Exception ex){
+            return "FAILED,"+ex.getMessage();
+        }
     }
 }
